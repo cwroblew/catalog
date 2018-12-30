@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="540605910846-n8e4fj6o99hm800929jaiu35lpp16vce.apps.googleusercontent.com">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=start" async defer></script>
+    <script>
+        function start() {
+            console.log("Start");
+          gapi.load('auth2', function() {
+              console.log("load");
+            auth2 = gapi.auth2.init({
+              client_id: '540605910846-n8e4fj6o99hm800929jaiu35lpp16vce.apps.googleusercontent.com',
+              // Scopes to request in addition to 'profile' and 'email'
+              //scope: 'additional_scope'
+            });
+            console.log(auth2);
+          });
+        }
+    </script>
+    <!-- Facebook SDK -->
+
+</head>
+<body>
+    <div class="row banner item">
+        <div class="col-md-11 col-md-offset-1 padding-none">
+            <h1>Login with OAuth 2.0 </h1>
+
+        </div>
+    </div>
+    <div id="result"></div>
+
+    <script src="{{ url_for('static', filename='js/google.js') }}"></script>
+    <script>
+        var state="{{STATE}}";
+        console.log(state);
+    </script>
+    <!-- GOOGLE PLUS SIGN IN-->
+    <button id="signinButton">Sign in with Google</button>
+    <script>
+      $('#signinButton').click(function() {
+        // signInCallback defined in step 6.
+          console.log("clicking....");
+        auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(onSignIn);
+      });
+    </script>
+    <script src="{{ url_for('static', filename='js/facebook.js') }}"></script>
+
+    <!--
+      Below we include the Login Button social plugin. This button uses
+      the JavaScript SDK to present a graphical Login button that triggers
+      the FB.login() function when clicked.
+    -->
+
+    <fb:login-button
+            scope="public_profile,email"
+            onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <div id="status">
+    </div>
+    <a href="#" onclick="signOut();">Sign out</a>
+<script>
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+</script>
+
+</body>
+</html>
